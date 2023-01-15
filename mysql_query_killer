@@ -1,0 +1,11 @@
+#!/bin/bash
+set -x
+#path='/home/bull/scripts/'
+i=1
+while [ $i -lt 5 ]
+do
+mysql -e "select id from information_schema.processlist where user='azurmoney_money_rw' and command='Query' and time > 15" | awk '{print "kill "$1";"}' > kill_select.txt
+mysql -f < kill_select.txt  2>err
+sleep 8
+i=$((i+1))
+done
