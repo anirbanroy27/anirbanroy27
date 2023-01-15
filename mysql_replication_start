@@ -1,0 +1,11 @@
+#!/bin/bash -x
+for i in 1205 1236
+do
+error_code=$(mysql -s -e ""select LAST_ERROR_NUMBER from performance_schema.replication_applier_status_by_coordinator;"" |tail)
+if [ $error_code = $i ];
+then
+  mysql -e ""start slave""
+else
+  echo ""replication is fine""
+fi
+done
